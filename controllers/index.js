@@ -31,6 +31,7 @@ export const regUser = async (req, res) => {
           address: newUser.address,
         },
       });
+      return
     }
     else if (existingUser !== null) {
       return res.status(400).json({ message: "User already exists" });
@@ -59,6 +60,7 @@ export const loginUser = async (req, res) => {
           address: find.address
         }
       });
+      return
     }
     else if (decipher === false) {
       throw new Error("Unauthorized");
@@ -92,6 +94,7 @@ export const changePassword = async (req, res) => {
           address: user.address
         }
       });
+      return
     }
     else if (decipher === false) {
       return res.status(400).json({ message: "Current password is incorrect" });
@@ -130,7 +133,7 @@ export const createOrder = async (req, res) => {
     // console.log("inside here here")
     const products = req.body;
     const { _id } = req.User
-    console.log(_id, products, "this is it")
+    // console.log(_id, products, "this is it")
     // Create a new order
     const newOrder = new OrderHistory({
       _id: _id,

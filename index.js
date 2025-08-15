@@ -10,14 +10,32 @@ const app = express();
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+// app.use(
+//     cors({
+//         origin: 'https://ture-chi.vercel.app',
+//         methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+//         allowedHeaders: ["Content-Type", 'Authorization', 'Cache-Control','Expires', 'Pragma'],
+//         credentials: true
+//     })
+// )
+
+const allowedOrigins = ['https://ture-chi.vercel.app', 'http://localhost:3000'];
+
 app.use(
-    cors({
-        origin: 'https://ture-chi.vercel.app',
-        methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-        allowedHeaders: ["Content-Type", 'Authorization', 'Cache-Control','Expires', 'Pragma'],
-        credentials: true
-    })
-)
+  cors({
+    origin: function(origin, callback){
+      if(!origin) return callback(null, true); // allow Postman or server-to-server
+      if(allowedOrigins.indexOf(origin) === -1){
+        return callback(new Error('Not allowed by CORS'));
+      }
+      return callback(null, true);
+    },
+    methods: ['GET','POST','DELETE','PUT','PATCH'],
+    allowedHeaders: ["Content-Type", 'Authorization'],
+    credentials: true
+  })
+);
+
 // app.use(function (req, res, next) {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   res.setHeader(
