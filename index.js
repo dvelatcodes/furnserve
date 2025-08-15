@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: 'https://ture-chi.vercel.app',
         methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
         allowedHeaders: ["Content-Type", 'Authorization', 'Cache-Control','Expires', 'Pragma'],
         credentials: true
@@ -34,23 +34,6 @@ app.use(
 
 app.use(cookieParser())
 
-
-// app.post('/cat', async (req,res)=>{
-//     try {
-//         if(!req.body.name||!req.body.age){
-//             res.status(400).send("send all required fields")
-//         }
-//         const newCat = {
-//             name : req.body.name,
-//             age : req.body.age
-//         }
-
-//         const cat = await Cat.create(newCat)
-//         res.status(200).send(cat)
-//     } catch (error) {
-//         res.status(500).send({ message: error.message})
-//     }
-// })
 
 
 app.use("/", router);

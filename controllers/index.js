@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import OrderHistory from "../models/orderHistory.js";
 import { genAuthToken } from "../reuseableFunction/genAuthToken.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
@@ -39,19 +40,6 @@ export const regUser = async (req, res) => {
   }
 };
 
-// getUser
-// getUser
-// export const getAllUser = async (req, res) => {
-//   try {
-//     const userSchools = await User.find();
-//     if (userSchools.length > 0) {
-//       res.status(200).json(userSchools);
-//     }
-//   } catch (error) {
-//     res.status(401).json(error);
-//   }
-// };
-
 // login user
 // login user
 export const loginUser = async (req, res) => {
@@ -86,7 +74,7 @@ export const changePassword = async (req, res) => {
   try {
     const { oldPass, newPass } = req.body;
     const user = req.User;
-     const find = await User.findOne({
+    const find = await User.findOne({
       email: user.email,
     });
     const decipher = await bcrypt.compare(oldPass, find.password);
@@ -131,5 +119,34 @@ export const getProfile = async (req, res) => {
     });
   } catch (err) {
     res.json({ message: err });
+  }
+};
+
+// save order history
+
+export const createOrder = async (req, res) => {
+  try {
+    // { userId, products: [ { name, price, quantity } ] }
+    // console.log("inside here here")
+    const products = req.body;
+    const { _id } = req.User
+    console.log(_id, products, "this is it")
+    // Create a new order
+    const newOrder = new OrderHistory({
+      _id: _id,
+      products : products
+    });
+
+    // Save to DB
+    const savedOrder = await newOrder.save();
+
+    res.status(201).json({
+      message: "Order saved successfully",
+      order: savedOrder
+    });
+  } catch (error) {
+    res.json({
+      message: error.message,
+    });
   }
 };
