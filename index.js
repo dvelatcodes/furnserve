@@ -19,36 +19,36 @@ app.use(express.urlencoded({ extended: true }));
 //     })
 // )
 
-const allowedOrigins = ['https://ture-chi.vercel.app', 'http://localhost:3000'];
+// const allowedOrigins = ['https://ture-chi.vercel.app', 'http://localhost:3000'];
 
-app.use(
-  cors({
-    origin: function(origin, callback){
-      if(!origin) return callback(null, true); // allow Postman or server-to-server
-      if(allowedOrigins.indexOf(origin) === -1){
-        return callback(new Error('Not allowed by CORS'));
-      }
-      return callback(null, true);
-    },
-    methods: ['GET','POST','DELETE','PUT','PATCH'],
-    allowedHeaders: ["Content-Type", 'Authorization'],
-    credentials: true
-  })
-);
+// app.use(
+//   cors({
+//     origin: function(origin, callback){
+//       if(!origin) return callback(null, true); // allow Postman or server-to-server
+//       if(allowedOrigins.indexOf(origin) === -1){
+//         return callback(new Error('Not allowed by CORS'));
+//       }
+//       return callback(null, true);
+//     },
+//     methods: ['GET','POST','DELETE','PUT','PATCH'],
+//     allowedHeaders: ["Content-Type", 'Authorization'],
+//     credentials: true
+//   })
+// );
 
-// app.use(function (req, res, next) {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "X-Requested-With,content-type"
-//   );
-//   res.setHeader("Access-Control-Allow-Credentials", true);
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 app.use(cookieParser())
 
