@@ -3,7 +3,8 @@ import {
   loginUser,
   getProfile,
   changePassword,
-  createOrder
+  createOrder,
+  getOrder
 } from "../controllers/index.js";
 import { authPioneer } from "../middleware/index.js";
 import express from "express";
@@ -17,5 +18,7 @@ router.get("/loginUser", loginUser);
 router.get("/profile", authPioneer, getProfile);
 router.patch("/changePass", authPioneer, changePassword);
 router.post("/createOrder", authPioneer, createOrder)
+router.get("/getOrder", authPioneer, getOrder)
+
 
 export default router;

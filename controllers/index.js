@@ -45,6 +45,7 @@ export const regUser = async (req, res) => {
 // login user
 export const loginUser = async (req, res) => {
   try {
+    // console.log(req.query)
     const { email, password } = req.query;
     const find = await User.findOne({
       email: email,
@@ -85,7 +86,6 @@ export const changePassword = async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(newPass, salt);
       await user.save();
-
       res.status(200).send({
         user: {
           email: user.email,
@@ -125,21 +125,42 @@ export const getProfile = async (req, res) => {
   }
 };
 
+export const getOrder = async (req, res) => {
+  try {
+    // authPioneer has already attached the user to req.User
+    if (!req.User) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const check = req.User.email
+
+    const existingOrder = await OrderHistory.findOne({ email: check });
+
+    if (existingOrder !== null) {
+      // send the user info exclude sensitive data like password
+      res.status(200).json({
+        user: {
+          email: existingOrder.email,
+          items: existingOrder.products,
+          time: existingOrder.createdAt,
+        }
+      });
+    }
+  } catch (err) {
+    res.json({ message: err });
+  }
+};
+
 // save order history
 
 export const createOrder = async (req, res) => {
   try {
-    // { userId, products: [ { name, price, quantity } ] }
-    // console.log("inside here here")
     const products = req.body;
-    const { _id } = req.User
-    // console.log(_id, products, "this is it")
-    // Create a new order
+    const { email } = req.User
     const newOrder = new OrderHistory({
-      _id: _id,
-      products : products
+      email: email,
+      products: products
     });
-
     // Save to DB
     const savedOrder = await newOrder.save();
 

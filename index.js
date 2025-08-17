@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
         origin: 'https://ture-chi.vercel.app',
+        // origin: 'http://localhost:3000',
         methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
         allowedHeaders: ["Content-Type", 'Authorization', 'Cache-Control','Expires', 'Pragma'],
         credentials: true
